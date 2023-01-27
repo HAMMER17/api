@@ -1,21 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
 
 export default function Page() {
   const item = useParams()
   const navigate = useNavigate()
   const [country, setCountry] = useState([])
+  const [border, setBorder] = useState([])
   const navBack = () => {
     navigate(-1)
   }
   useEffect(() => {
-    axios.get(`https://restcountries.com/v2/name/${item.name}`)
-      .then((res) => setCountry(res.data))
+    try {
+      axios.get(`https://restcountries.com/v2/name/${item.name}`)
+        .then((res) => setCountry(res.data))
+    } catch (error) {
+      console.log(error)
+    }
   }, [item])
 
-  console.log(country)
+  useEffect(() => {
+    try {
+      const borders = country.map(elem => elem.borders)
+      axios.get(`https://restcountries.com/v2/alpha?codes=${borders}`)
+        .then(({ data }) => setBorder(data))
+    } catch (err) {
+      console.log(err)
+    }
+  }, [item])
   return (
     <div className='page_container'>
       {country.map((elem) => (
@@ -27,21 +41,21 @@ export default function Page() {
             <h2>{elem.capital}</h2>
             <div className="page_list">
               <h3>Borders:</h3>
-              {elem.borders.map(el => (
-                <p>{el}</p>
+              {border.map((el, i) => (
+                <Link key={i} to={`/${el.name}`}><p>{el.name}</p></Link>
               ))}
 
             </div>
           </div>
           <div className="page_right">
-            <h2>{elem.currencies.map(el => (
+            {elem.currencies.map(el => (
               <>
                 <h1>Currency</h1>
                 <span>Name:</span> <h2> {el.name}</h2>
                 <span>Code:</span>  <h2> {el.code}</h2>
                 <span>Symbol:</span> <h2> {el.symbol}</h2>
               </>
-            ))}</h2>
+            ))}
             <h3>{elem.name}</h3>
             <h3>{elem.capital}</h3>
 

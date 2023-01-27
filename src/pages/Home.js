@@ -26,6 +26,7 @@ export default function Home({ data, setData }) {
     setSearch(res)
 
   }
+  console.log(data)
   return (
     <>
       <Input onChange={getSearch} text={search} />

@@ -146,6 +146,12 @@
 
 .page_list p {
   margin: 10px;
+  width: 90%;
+  height: 100%;
+  border-radius: 10px;
+  background: var(--bg-color);
+  color: var(--bg);
+  padding: 5px;
 }
 
 .page_right {
@@ -182,7 +188,7 @@
 
 .page_left button:hover {
   background: var(--bg-color);
-
+  color: var(--bg);
   transform: scale(1.05);
   transition: 0.5s;
 }
@@ -193,6 +199,7 @@
   }
 
   .input_container input {
+    width: 200px;
     margin: 10px;
   }
 
@@ -219,5 +226,13 @@
 
   .page_right p {
     text-align: center;
+  }
+
+  .page_list {
+    flex-direction: column;
+  }
+
+  .page_list p {
+    height: 70%;
   }
 }
