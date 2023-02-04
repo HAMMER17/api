@@ -3,12 +3,14 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
+import { ClockLoader } from 'react-spinners'
 
 export default function Page() {
   const item = useParams()
   const navigate = useNavigate()
   const [country, setCountry] = useState([])
   const [border, setBorder] = useState([])
+  const [loader, setLoader] = useState(true)
   const navBack = () => {
     navigate(-1)
   }
@@ -29,7 +31,10 @@ export default function Page() {
     } catch (err) {
       console.log(err)
     }
-  }, [item])
+    setTimeout(() => {
+      setLoader(false)
+    }, 2000)
+  }, [country])
   return (
     <div className='page_container'>
       {country.map((elem) => (
@@ -41,7 +46,7 @@ export default function Page() {
             <h2>{elem.capital}</h2>
             <div className="page_list">
               <h3>Borders:</h3>
-              {border.map((el, i) => (
+              {loader ? (<ClockLoader color="#00ff53" size={70} />) : border.map((el, i) => (
                 <Link key={i} to={`/${el.name}`}><p>{el.name}</p></Link>
               ))}
 
